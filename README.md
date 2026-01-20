@@ -20,7 +20,6 @@ Pastikan susunan folder di mesin *Attacker* (Kali Linux) Anda seperti berikut:
 /skripsi-ids/
 ├── daily_round.sh        # [MAIN] Script utama pengendali ronde
 ├── normal_traffic.sh     # [NOISE] Script simulasi trafik normal
-├── analyze_logs.py       # [TOOL] Parser log otomatis (Python)
 ├── README.md             # Dokumentasi ini
 ├── logs/                 # Folder output (otomatis terisi)
 └── attacks/              # Folder modul serangan
