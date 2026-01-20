@@ -66,8 +66,8 @@ Jalankan script utama. Script ini akan memanggil modul serangan dan trafik norma
 ```
 ./daily_round.sh
 ```
-- Output: Lihat terminal untuk monitoring Payload yang dikirim.
-- Hasil: Tersimpan di folder logs/.
+ - Output: Lihat terminal untuk monitoring Payload yang dikirim.
+ - Hasil: Tersimpan di folder logs/.
 
 4. Analisis Hasil (Parser Log)
 Setelah pengujian selesai, salin file `eve.json` dari server Suricata ke folder ini, lalu jalankan:
