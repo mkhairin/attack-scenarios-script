@@ -29,6 +29,26 @@ Pastikan susunan folder di mesin *Attacker* (Kali Linux) Anda seperti berikut:
     ├── 04_sqlmap.sh      # SQL Injection
     ├── 05_xss.sh         # XSS (Reflected & Stored)
     ├── 06_trav.sh        # Path Traversal
-    └── 07_rce.sh         # RCE (Metasploit) ```
+    └── 07_rce.sh         # RCE (Metasploit)
+```
 
 ## 🛠️ Prasyarat (Requirements)
+- OS Attacker: Kali Linux (Recommended)
+- Target Machine: Metasploitable 2 (atau target lain yang diizinkan)
+- Tools Terinstall:
+ - `nmap`, `hydra`, `hping3`, `sqlmap`, `curl`, `wget`
+ - `metasploit-framework` (mfsconsole)
+ - `sshpass` (untuk simulasi login SSH normal)
+ - `pthon3` (untuk analisis log)
+
+## 🚀 Cara Penggunaan
+1. Clone & Persiapan Izin
+Clone repository ini ke Kali Linux Anda dan berikan izin eksekusi:
+```
+git clone [https://github.com/username-anda/repository-ini.git](https://github.com/username-anda/repository-ini.git)
+cd repository-ini
+chmod +x daily_round.sh normal_traffic.sh attacks/*.sh
+mkdir logs
+```
+
+2. Konfigurasi Variabel (WAJIB!)
