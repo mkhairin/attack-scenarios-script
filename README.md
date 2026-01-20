@@ -15,3 +15,19 @@ Proyek ini menggunakan metodologi **Interleaved Design**, di mana serangan siber
 ## 📂 Struktur Direktori
 
 Pastikan susunan folder di mesin *Attacker* (Kali Linux) Anda seperti berikut:
+
+```text
+/skripsi-ids/
+├── daily_round.sh        # [MAIN] Script utama pengendali ronde
+├── normal_traffic.sh     # [NOISE] Script simulasi trafik normal
+├── analyze_logs.py       # [TOOL] Parser log otomatis (Python)
+├── README.md             # Dokumentasi ini
+├── logs/                 # Folder output (otomatis terisi)
+└── attacks/              # Folder modul serangan
+    ├── 01_nmap.sh        # Port Scanning
+    ├── 02_hydra.sh       # SSH Brute Force
+    ├── 03_dos.sh         # DoS (Hping3)
+    ├── 04_sqlmap.sh      # SQL Injection
+    ├── 05_xss.sh         # XSS (Reflected & Stored)
+    ├── 06_trav.sh        # Path Traversal
+    └── 07_rce.sh         # RCE (Metasploit)
