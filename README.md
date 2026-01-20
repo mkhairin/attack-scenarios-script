@@ -81,7 +81,26 @@ Script ini akan menghasilkan tabel rekapitulasi jumlah deteksi per kategori sera
 
 ## 📊 Skenario Pengujian
 
-| Modul | Jenis Serangan | Teknik / Tools | 
-|--------|--------|--------|
-| Data 1 | Data 2 | Data 3 |
-| Data 4 | Data 5 | Data 6 |
+| Modul | Jenis Serangan | Teknik / Tools | Tujuan Pengujian |
+|--------|--------|--------|--------|
+| 01 | Reconnaissance | Nmap (SYN, Frag, Decoy) | Deteksi scan port & evasion |
+| 02 | Brute Force | Hydra (SSH) | Deteksi login failure threshold | 
+| 03 | DoS | Hping3 (ICMP, SYN Flood) | Deteksi anomali trafik/volumetrik |
+| 04 | Web Attack | SQLMap (Boolean, Time-based) | Deteksi SQL Injection signature |
+| 05 | Web Attack | Curl (XSS Payload) | Deteksi skrip berbahaya di URL/Body |
+| 06 | Web Attack | Curl (Directory Traversal) | Deteksi akses file sensitif (/etc/passwd) |
+| 07 | Exploitation | Metasploit (Vsftpd, Samba) | Deteksi shellcode & backdoor |
+| Noise | Normal Traffic| Wget, Apt, SSH Valid | Menguji False Positive |
+
+## ⚠️ Disclaimer
+HANYA UNTUK TUJUAN PENDIDIKAN DAN PENELITIAN. Script ini dibuat khusus untuk pengujian di lingkungan laboratorium terkontrol (Sandboxed Environment). Penggunaan script ini untuk menyerang target tanpa izin adalah tindakan ilegal. Penulis tidak bertanggung jawab atas penyalahgunaan alat ini.
+```
+---
+
+### Tips Tambahan untuk GitHub Anda:
+
+1.  **Screenshots:** Nanti setelah Anda menjalankan script dan muncul tampilan terminal yang warna-warni (Verbose Mode tadi), ambil *screenshot*-nya. Letakkan di folder `img/` dan tampilkan di README agar terlihat menarik.
+2.  **Badge:** Anda bisa menambahkan badge "Bash" atau "Python" di atas judul agar terlihat keren.
+
+Apakah ada bagian dari README ini yang ingin Anda ubah atau tambahkan?
+```
