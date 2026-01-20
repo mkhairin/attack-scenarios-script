@@ -52,3 +52,36 @@ mkdir logs
 ```
 
 2. Konfigurasi Variabel (WAJIB!)
+Sebelum menjalankan, Anda HARUS mengedit file script untuk menyesuaikan IP dan Session:
+ 1. Edit `normal_traffic.sh` & semua file di folder `attacks/`:
+    - Ubah `TARGET_IP="192.168.x.x"` sesuai IP Metasploitable Anda.
+ 2. Edit `attacks/07_rce.sh`:
+    - Ubah `LHOST="192.168.x.x"` sesuai IP Kali Linux Anda (untuk Reverse Shell).
+ 3. Edit `attacks/04_sqlmap.sh`, `05_xss.sh`, `06_trav.sh`:
+    - Update variabel `COOKIE="PHPSESSID=..."` dengan session ID login DVWA yang baru.
+   
+3. Menjalankan Pengujian (Daily Round)
+Jalankan script utama. Script ini akan memanggil modul serangan dan trafik normal secara bergantian.
+```
+./daily_round.sh
+```
+- Output: Lihat terminal untuk monitoring Payload yang dikirim.
+- Hasil: Tersimpan di folder logs/.
+
+4. Analisis Hasil (Parser Log)
+Setelah pengujian selesai, salin file `eve.json` dari server Suricata ke folder ini, lalu jalankan:
+```
+# Salin log (contoh)
+cp /var/log/suricata/eve.json .
+
+# Jalankan analisis
+python3 analyze_logs.py
+```
+Script ini akan menghasilkan tabel rekapitulasi jumlah deteksi per kategori serangan.
+
+## 📊 Skenario Pengujian
+
+| Modul | Jenis Serangan | Teknik / Tools | 
+|--------|--------|--------|
+| Data 1 | Data 2 | Data 3 |
+| Data 4 | Data 5 | Data 6 |
