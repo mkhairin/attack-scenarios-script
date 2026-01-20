@@ -29,4 +29,6 @@ Pastikan susunan folder di mesin *Attacker* (Kali Linux) Anda seperti berikut:
     ├── 04_sqlmap.sh      # SQL Injection
     ├── 05_xss.sh         # XSS (Reflected & Stored)
     ├── 06_trav.sh        # Path Traversal
-    └── 07_rce.sh         # RCE (Metasploit)
+    └── 07_rce.sh         # RCE (Metasploit) ```
+
+## 🛠️ Prasyarat (Requirements)
