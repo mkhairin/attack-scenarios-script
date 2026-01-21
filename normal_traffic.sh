@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # --- KONFIGURASI TARGET ---
+# PENTING: Ganti 'x.x' dengan IP Metasploitable Anda!
 TARGET_IP="192.168.x.x"
 TARGET_USER="msfadmin"
 TARGET_PASS="msfadmin"
@@ -14,8 +15,9 @@ echo "================================================================="
 # 1. DOWNLOAD FILE BINARY (.exe)
 # Dokumen: "wget file .exe dari web HTTP... admin download tools kerja"
 # -----------------------------------------------------------------
-echo "[1/7 Simulasi Download File .exe (Legal Tools)..."
-wget -q --user-agent="Mozilla/5.0 (Windows NT 10.0)" $SAFE_EXE_URL -O /dev/null
+echo "[1/7] Simulasi Download File .exe (Legal Tools)..."
+# PERBAIKAN: Ditambah -T 10 (timeout) agar tidak hang jika internet lemot
+wget -q -T 10 --user-agent="Mozilla/5.0 (Windows NT 10.0)" $SAFE_EXE_URL -O /dev/null
 echo "	-> Status: Done. (Target Alert: ET POLICY PE EXE)"
 sleep 2
 
@@ -24,8 +26,9 @@ sleep 2
 # Dokumen: "curl atau apt-get ke website luar... update OS wajar"
 # -----------------------------------------------------------------
 echo "[2/7] Simulasi System Update (User-Agent CLI)..."
-# Menggunakan User-Agent 'curl' atau 'Debian APT' yang sering dicurigai
-curl -s -A "Debian APT-HTTP/1.3 (1.0.1ubuntu2)" "http://archive.ubuntu.com/ubuntu/dists/bionic/Release" > /dev/null"
+# PERBAIKAN: Menghapus tanda kutip (") berlebih di akhir baris yang bikin error
+# Ditambah -m 10 (max time) 
+curl -s -m 10 -A "Debian APT-HTTP/1.3 (1.0.1ubuntu2)" "http://archive.ubuntu.com/ubuntu/dists/bionic/Release" > /dev/null
 echo "	-> Status: Done. (Target Alert: ET POLICY GNU/Linux APT)"
 sleep 2
 
@@ -34,8 +37,8 @@ sleep 2
 # Dokumen: "Login SSH dengan password BENAR berulang kali... admin rajin"
 # -----------------------------------------------------------------
 echo "[3/7] Simulasi SSH Login Berulang (Valid Credentials)..."
-# Melakukan login 5x berturut-turut dengan cepat
-for i in {1...5}
+# PERBAIKAN: Mengubah {1...5} (salah) menjadi {1..5} (benar)
+for i in {1..5}
 do
  sshpass -p "$TARGET_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=3 $TARGET_USER@$TARGET_IP "exit" 2>/dev/null
    echo -n "."
@@ -60,8 +63,8 @@ sleep 2
 # Dokumen: "Login ke FTP Server... aktivitas wajar di jaringan lawas"
 # -----------------------------------------------------------------
 echo "[5/7] Simulasi FTP Login (Cleartext)..."
-# Login FTP menggunakan curl
-curl -s "ftp://$TARGET_USER:$TARGET_PASS@$TARGET_IP/" > /dev/null
+# Login FTP menggunakan curl (ditambah timeout -m 5)
+curl -s -m 5 "ftp://$TARGET_USER:$TARGET_PASS@$TARGET_IP/" > /dev/null
 echo "	-> Status: Done. (Target Alert: ET POLICY FTP Login Successful)"
 sleep 2
 
