@@ -1,13 +1,17 @@
 #!/bin/bash
 
 # =================================================================
-# FILE: daily_round.sh (THE BOSS SCRIPT) - REVISI INTERLEAVED
+# FILE: daily_round.sh (THE BOSS SCRIPT) - REVISI BATCH SUPPORT
 # Deskripsi: Otomatisasi Pengujian IDS Berbasis Ronde Campuran
 # Metodologi: Interleaved Design (Serangan + Trafik Normal)
 # =================================================================
 
-# --- KONFIGURASI ---
-TOTAL_ROUNDS=10           # Jumlah ronde per hari
+# --- KONFIGURASI INPUT (AGAR BISA DICICIL) ---
+# Jika dijalankan tanpa angka, default jalankan Ronde 1 sampai 30
+START_ROUND=${1:-1}
+END_ROUND=${2:-30}
+
+# --- KONFIGURASI JEDA WAKTU ---
 DELAY_BETWEEN_ATTACKS=30  # Jeda istirahat antar serangan (detik)
 DELAY_BETWEEN_NOISE=20    # Jeda istirahat setelah trafik normal (detik)
 DELAY_BETWEEN_ROUNDS=120  # Jeda istirahat antar ronde (detik)
@@ -32,15 +36,19 @@ function countdown() {
     echo -e "${NC}Ready!"
 }
 
-# Fungsi menjalankan modul serangan
+# Fungsi menjalankan modul serangan (UPDATED: Terima Ronde)
 function run_module() {
     SCRIPT_NAME=$1
     MODULE_TITLE=$2
+    CURRENT_ROUND=$3  # Tangkap nomor ronde dari loop utama
     
     echo -e "${BLUE}[+] [ATTACK] Menjalankan Modul: ${MODULE_TITLE}${NC}"
+    echo -e "${BLUE}    [Info] Mengirim instruksi Ronde ke-$CURRENT_ROUND ke script...${NC}"
     
     if [ -f "attacks/$SCRIPT_NAME" ]; then
-        ./attacks/$SCRIPT_NAME
+        # Jalankan script dengan mengirim parameter ronde
+        ./attacks/$SCRIPT_NAME "$CURRENT_ROUND"
+        
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}    -> Modul Serangan Selesai.${NC}"
         else
@@ -78,62 +86,66 @@ echo "==========================================================="
 echo -e "   ${RED}SURICATA IDS RESEARCH AUTOMATION${NC}"
 echo "   Methodology: Interleaved (Attack + Normal Noise)"
 echo "==========================================================="
-echo "Total Ronde   : $TOTAL_ROUNDS"
+echo "Target Run    : Ronde $START_ROUND sampai $END_ROUND"
 echo "Jeda Serangan : $DELAY_BETWEEN_ATTACKS detik"
 echo "Start Time    : $(date)"
 echo "==========================================================="
 
-# Cek Izin Eksekusi normal_traffic.sh
-if [ ! -x "./normal_traffic.sh" ]; then
-    echo -e "${RED}[!] PERINGATAN: normal_traffic.sh belum executable.${NC}"
-    echo "    Mencoba memperbaiki izin..."
-    chmod +x normal_traffic.sh
-fi
+# Cek Izin Eksekusi normal_traffic.sh & attacks
+chmod +x normal_traffic.sh attacks/*.sh 2>/dev/null
 
 echo ""
 
-# Loop Ronde (1 sampai 10)
-for (( round=1; round<=TOTAL_ROUNDS; round++ ))
+# Loop Ronde (Mengikuti Input User START s.d END)
+for (( round=START_ROUND; round<=END_ROUND; round++ ))
 do
     echo -e "${YELLOW}###########################################################"
-    echo -e " MEMULAI RONDE KE-$round DARI $TOTAL_ROUNDS"
+    echo -e " MEMULAI RONDE KE-$round"
+    
+    # Info Visual Set Mode (Agar kita tahu sekarang Set A, B, atau C)
+    if [ "$round" -le 10 ]; then
+        echo -e " MODE: SET A (BASELINE / STANDARD)"
+    elif [ "$round" -le 20 ]; then
+        echo -e " MODE: SET B (EVASION / VARIATION 1)"
+    else
+        echo -e " MODE: SET C (ADVANCED / VARIATION 2)"
+    fi
+    
     echo -e " Waktu: $(date)"
     echo -e "###########################################################${NC}"
     echo ""
 
     # --- KELOMPOK 1: RECON & BRUTE FORCE ---
-    run_module "01_nmap.sh" "01 - Port Scanning (Nmap)"
-    run_module "02_hydra.sh" "02 - SSH Brute Force (Hydra)"
+    # Kita kirim variabel "$round" ke fungsi run_module
+    run_module "01_nmap.sh" "01 - Port Scanning (Nmap)" "$round"
+    run_module "02_hydra.sh" "02 - SSH Brute Force (Hydra)" "$round"
 
     # >>> SISIPAN 1: NORMAL TRAFFIC <<<
-    # Logika: Setelah ada yang scan port & brute force, 
-    # Admin/User mungkin melakukan aktivitas jaringan (Ping/Update).
     run_noise
 
     # --- KELOMPOK 2: NETWORK STRESS ---
-    run_module "03_dos.sh" "03 - DoS Attack (Hping3)"
+    run_module "03_dos.sh" "03 - DoS Attack (Hping3)" "$round"
     
     # --- KELOMPOK 3: WEB ATTACKS ---
-    run_module "04_sqlmap.sh" "04 - SQL Injection (Sqlmap)"
+    run_module "04_sqlmap.sh" "04 - SQL Injection (Sqlmap)" "$round"
 
     # >>> SISIPAN 2: NORMAL TRAFFIC <<<
-    # Logika: Di tengah serangan web, user valid tetap mengakses web.
     run_noise
     
-    run_module "05_xss.sh" "05 - XSS Injection (Curl)"
-    run_module "06_trav.sh" "06 - Path Traversal (Curl)"
+    run_module "05_xss.sh" "05 - XSS Injection (Curl)" "$round"
+    run_module "06_trav.sh" "06 - Path Traversal (Curl)" "$round"
     
     # --- KELOMPOK 4: EXPLOITATION ---
-    run_module "07_rce.sh" "07 - RCE (Metasploit)"
+    run_module "07_rce.sh" "07 - RCE (Metasploit)" "$round"
 
     # --- AKHIR RONDE ---
     echo -e "${GREEN}>>> RONDE $round SELESAI.${NC}"
     
-    if [ $round -lt $TOTAL_ROUNDS ]; then
+    if [ $round -lt $END_ROUND ]; then
         echo -e "${BLUE}Istirahat panjang sebelum ronde berikutnya...${NC}"
         countdown $DELAY_BETWEEN_ROUNDS
     else
-        echo -e "${GREEN}SEMUA RONDE SELESAI PADA $(date)!${NC}"
+        echo -e "${GREEN}BATCH INI SELESAI PADA $(date)!${NC}"
     fi
     echo ""
 done
