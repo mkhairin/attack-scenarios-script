@@ -51,14 +51,34 @@ fi
 # MEMBUAT WORDLIST DUMMY
 echo "123456" > logs/pass_short.txt
 echo "password" >> logs/pass_short.txt
-echo "msfadmin" >> logs/pass_short.txt
 echo "admin123" >> logs/pass_short.txt
 echo "qwerty" >> logs/pass_short.txt
+echo "root" >> logs/pass_short.txt
+echo "toor" >> logs/pass_short.txt
+echo "12345678" >> logs/pass_short.txt
+echo "admin" >> logs/pass_short.txt
+echo "kali" >> logs/pass_short.txt
+echo "sysadmin" >> logs/pass_short.txt
+echo "master" >> logs/pass_short.txt
+echo "111111" >> logs/pass_short.txt
+echo "letmein" >> logs/pass_short.txt
+echo "hunter2" >> logs/pass_short.txt
+echo "msfadmin" >> logs/pass_short.txt
 
 echo "root" > logs/user_list.txt
 echo "admin" >> logs/user_list.txt
 echo "support" >> logs/user_list.txt
 echo "user" >> logs/user_list.txt
+echo "guest" >> logs/user_list.txt
+echo "test" >> logs/user_list.txt
+echo "oracle" >> logs/user_list.txt
+echo "postgres" >> logs/user_list.txt
+echo "mysql" >> logs/user_list.txt
+echo "tomcat" >> logs/user_list.txt
+echo "ubuntu" >> logs/user_list.txt
+echo "kali" >> logs/user_list.txt
+echo "debian" >> logs/user_list.txt
+echo "centos" >> logs/user_list.txt
 echo "msfadmin" >> logs/user_list.txt
 
 echo "[+] [02_HYDRA] Memulai Skenario Brute Force..."
